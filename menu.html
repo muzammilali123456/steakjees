@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - SteakJees</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation (same as index.html) -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">
+                <span class="text-gold">Steak</span><span class="text-white">Jees</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="menu.html">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menu Header -->
+    <section class="py-5 bg-darker mt-5">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="display-4 fw-bold text-white mb-3">Our Menu</h1>
+                <p class="lead text-light">Explore our diverse selection of premium dishes</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filters -->
+    <section class="py-4 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto mb-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0" placeholder="Search for dishes..." id="searchInput" onkeyup="searchProducts(this.value)">
+                        <button class="btn btn-gold" type="button">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="filter-btn active" onclick="filterProducts('all')">All Menu</button>
+                <button class="filter-btn" onclick="filterProducts('fast-food')">Fast Food</button>
+                <button class="filter-btn" onclick="filterProducts('desi')">Desi Cuisine</button>
+                <button class="filter-btn" onclick="filterProducts('chinese')">Chinese</button>
+                <button class="filter-btn" onclick="filterProducts('korean')">Korean</button>
+                <button class="filter-btn" onclick="filterProducts('american')">American</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="py-5 bg-dark">
+        <div class="container">
+            <div class="row g-4" id="productsGrid">
+                <!-- Products loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (same as index.html) -->
+    <footer class="bg-darker text-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h3 class="text-gold fw-bold mb-3">SteakJees</h3>
+                    <p>Experience the finest steaks and global cuisine crafted with passion and precision.</p>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h5 class="text-gold">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-light">Home</a></li>
+                        <li><a href="menu.html" class="text-light">Menu</a></li>
+                        <li><a href="about.html" class="text-light">About</a></li>
+                        <li><a href="contact.html" class="text-light">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h5 class="text-gold">Contact Info</h5>
+                    <p>123 Steak Street<br>New York, NY 10001<br>+1 (555) 123-4567<br>info@steakjees.com</p>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h5 class="text-gold">Hours</h5>
+                    <p>Mon-Sun: 11:00 AM - 11:00 PM</p>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center">
+                <p>&copy; 2024 SteakJees. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+</html>

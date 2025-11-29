@@ -1,60 +1,60 @@
-// Extended products data for menu page
+// Extended products data for menu page (Updated with PKR prices)
 const allProducts = [
     ...products, // Include featured products
     {
-        id: 7, name: "Crispy Chicken Wings", price: 14.99, category: "fast-food",
+        id: 7, name: "Crispy Chicken Wings", price: 4199, category: "fast-food",
         description: "Golden crispy wings with your choice of sauce", initials: "CW"
     },
     {
-        id: 8, name: "Lamb Biryani", price: 16.99, category: "desi",
+        id: 8, name: "Lamb Biryani", price: 4799, category: "desi",
         description: "Fragrant rice with tender lamb and aromatic spices", initials: "LB"
     },
     {
-        id: 9, name: "Beef Chow Mein", price: 13.99, category: "chinese", 
+        id: 9, name: "Beef Chow Mein", price: 3899, category: "chinese", 
         description: "Stir-fried noodles with beef and fresh vegetables", initials: "BC"
     },
     {
-        id: 10, name: "Kimchi Fried Rice", price: 11.99, category: "korean",
+        id: 10, name: "Kimchi Fried Rice", price: 3399, category: "korean",
         description: "Spicy fermented cabbage with fried rice", initials: "KR"
     },
     {
-        id: 11, name: "BBQ Ribs Platter", price: 24.99, category: "american",
+        id: 11, name: "BBQ Ribs Platter", price: 6999, category: "american",
         description: "Fall-off-the-bone pork ribs with BBQ sauce", initials: "BR"
     },
     {
-        id: 12, name: "Loaded Fries Supreme", price: 9.99, category: "fast-food",
+        id: 12, name: "Loaded Fries Supreme", price: 2799, category: "fast-food",
         description: "Crispy fries loaded with cheese, bacon, and herbs", initials: "LF"
     },
     {
-        id: 13, name: "Butter Chicken", price: 15.99, category: "desi",
+        id: 13, name: "Butter Chicken", price: 4499, category: "desi",
         description: "Creamy tomato-based curry with tender chicken", initials: "BC"
     },
     {
-        id: 14, name: "Sweet and Sour Pork", price: 12.99, category: "chinese",
+        id: 14, name: "Sweet and Sour Pork", price: 3599, category: "chinese",
         description: "Crispy pork in tangy sweet and sour sauce", initials: "SP"
     },
     {
-        id: 15, name: "Bibimbap", price: 15.99, category: "korean",
+        id: 15, name: "Bibimbap", price: 4499, category: "korean",
         description: "Mixed rice with vegetables, meat, and egg", initials: "BB"
     },
     {
-        id: 16, name: "New York Strip", price: 32.99, category: "american",
+        id: 16, name: "New York Strip", price: 9199, category: "american",
         description: "Classic New York strip steak, perfectly grilled", initials: "NS"
     },
     {
-        id: 17, name: "BBQ Bacon Cheeseburger", price: 15.99, category: "fast-food",
+        id: 17, name: "BBQ Bacon Cheeseburger", price: 4499, category: "fast-food",
         description: "Smoky BBQ flavor with crispy bacon and melted cheese", initials: "BB"
     },
     {
-        id: 18, name: "Seekh Kebab", price: 13.99, category: "desi",
+        id: 18, name: "Seekh Kebab", price: 3899, category: "desi",
         description: "Minced meat kebabs with traditional spices", initials: "SK"
     },
     {
-        id: 19, name: "Dim Sum Platter", price: 16.99, category: "chinese",
+        id: 19, name: "Dim Sum Platter", price: 4799, category: "chinese",
         description: "Assorted steamed dumplings and buns", initials: "DS"
     },
     {
-        id: 20, name: "Korean BBQ Short Ribs", price: 22.99, category: "korean",
+        id: 20, name: "Korean BBQ Short Ribs", price: 6499, category: "korean",
         description: "Galbi-marinated beef short ribs", initials: "SR"
     }
 ];
@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('productsGrid')) {
         loadAllProducts();
         setupFilterButtons();
+        setupDemoLinks();
     }
 });
 
@@ -87,12 +88,12 @@ function loadAllProducts() {
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <h5 class="card-title text-white">${product.name}</h5>
-                            <h5 class="text-gold fw-bold">$${product.price}</h5>
+                            <h5 class="text-gold fw-bold">Rs. ${product.price.toLocaleString()}</h5>
                         </div>
                         <p class="card-text text-light">${product.description}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-outline-gold btn-sm">View Details</button>
-                            <button class="btn btn-gold btn-sm" onclick="addToCart(${product.id})">Add to Cart</button>
+                            <button class="btn btn-outline-gold btn-sm demo-link">View Details</button>
+                            <button class="btn btn-gold btn-sm demo-link">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -151,6 +152,17 @@ function setupFilterButtons() {
         btn.addEventListener('click', function() {
             filterButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
+        });
+    });
+}
+
+// Setup demo links for menu page - ONLY for buttons
+function setupDemoLinks() {
+    const demoButtons = document.querySelectorAll('.demo-link');
+    demoButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            showDemoMessage();
         });
     });
 }

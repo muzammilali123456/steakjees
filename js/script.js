@@ -1,9 +1,9 @@
-// Products Data
+// Products Data (Updated with PKR prices)
 const products = [
     {
         id: 1,
         name: "Prime Rib Steak",
-        price: 29.99,
+        price: 8399,
         category: "american",
         description: "Premium aged prime rib with herb butter",
         featured: true,
@@ -12,7 +12,7 @@ const products = [
     {
         id: 2,
         name: "Classic Beef Burger",
-        price: 12.99,
+        price: 3599,
         category: "fast-food",
         description: "Juicy beef patty with fresh vegetables",
         featured: true,
@@ -21,7 +21,7 @@ const products = [
     {
         id: 3,
         name: "Tandoori Chicken",
-        price: 18.99,
+        price: 5299,
         category: "desi",
         description: "Traditional clay oven roasted chicken",
         featured: true,
@@ -30,7 +30,7 @@ const products = [
     {
         id: 4,
         name: "Bulgogi Beef",
-        price: 19.99,
+        price: 5599,
         category: "korean",
         description: "Marinated beef grilled to perfection",
         featured: true,
@@ -39,7 +39,7 @@ const products = [
     {
         id: 5,
         name: "Kung Pao Chicken",
-        price: 14.99,
+        price: 4199,
         description: "Spicy stir-fried chicken with peanuts",
         category: "chinese",
         featured: false,
@@ -48,7 +48,7 @@ const products = [
     {
         id: 6,
         name: "Filet Mignon",
-        price: 36.99,
+        price: 10399,
         category: "american",
         description: "Tender filet mignon with red wine reduction",
         featured: true,
@@ -69,6 +69,7 @@ const categoryColors = {
 document.addEventListener('DOMContentLoaded', function() {
     loadFeaturedProducts();
     initializeAnimations();
+    setupDemoLinks();
 });
 
 // Load featured products on homepage
@@ -92,12 +93,12 @@ function loadFeaturedProducts() {
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <h5 class="card-title text-white">${product.name}</h5>
-                            <h5 class="text-gold fw-bold">$${product.price}</h5>
+                            <h5 class="text-gold fw-bold">Rs. ${product.price.toLocaleString()}</h5>
                         </div>
                         <p class="card-text text-light">${product.description}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-outline-gold btn-sm">View Details</button>
-                            <button class="btn btn-gold btn-sm" onclick="addToCart(${product.id})">Add to Cart</button>
+                            <button class="btn btn-outline-gold btn-sm demo-link">View Details</button>
+                            <button class="btn btn-gold btn-sm demo-link">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -135,36 +136,60 @@ function initializeAnimations() {
     });
 }
 
-// Add to cart function
-function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    if (product) {
-        // Show notification
-        showNotification(`${product.name} added to cart!`);
-    }
+// Demo link functionality - ONLY for buttons and non-functional links
+function setupDemoLinks() {
+    // Add click handlers to buttons that should show demo message
+    const demoButtons = document.querySelectorAll('.demo-link, .btn[onclick*="addToCart"]');
+    
+    demoButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            showDemoMessage();
+        });
+    });
+
+    // Handle non-functional links (like #, get directions, etc.)
+    const demoLinks = document.querySelectorAll('a[href="#"], a.demo-link');
+    demoLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showDemoMessage();
+        });
+    });
 }
 
-// Show notification
-function showNotification(message) {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'position-fixed top-0 start-50 translate-middle-x mt-5 alert alert-success';
-    notification.style.zIndex = '9999';
-    notification.innerHTML = `
-        <div class="d-flex align-items-center">
-            <span>${message}</span>
-            <button type="button" class="btn-close ms-3" onclick="this.parentElement.parentElement.remove()"></button>
+// Show demo message
+function showDemoMessage() {
+    // Create modal for demo message
+    const modalHTML = `
+        <div class="modal fade" id="demoModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title text-gold">Demo Feature</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center py-4">
+                        <div class="fs-1 mb-3">🚧</div>
+                        <h4 class="text-gold mb-3">Just a Demo Link</h4>
+                        <p class="mb-0">This is a demonstration website. In a full implementation, this feature would be fully functional.</p>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-gold" data-bs-dismiss="modal">Understood</button>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
     
-    document.body.appendChild(notification);
+    // Add modal to body if not exists
+    if (!document.getElementById('demoModal')) {
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
     
-    // Auto remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentElement) {
-            notification.remove();
-        }
-    }, 3000);
+    // Show modal
+    const demoModal = new bootstrap.Modal(document.getElementById('demoModal'));
+    demoModal.show();
 }
 
 // Filter products (for menu page)

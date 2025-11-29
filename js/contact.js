@@ -16,11 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Validate form
             if (validateForm(formData)) {
-                // Simulate form submission
-                simulateFormSubmission(formData);
+                // Show demo message instead of actual submission
+                showDemoMessage();
             }
         });
     }
+
+    // Setup demo links for non-functional elements only
+    setupContactDemoLinks();
 });
 
 // Form validation
@@ -54,30 +57,15 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Simulate form submission
-function simulateFormSubmission(formData) {
-    // Show loading state
-    const submitBtn = document.querySelector('#contactForm button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Sending...';
-    submitBtn.disabled = true;
-    
-    // Simulate API call
-    setTimeout(() => {
-        // Show success message
-        showAlert('Thank you for your message! We will get back to you within 24 hours.', 'success');
-        
-        // Reset form
-        document.getElementById('contactForm').reset();
-        
-        // Reset button
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-        
-        // Log form data (in real app, this would go to your backend)
-        console.log('Form submitted:', formData);
-        
-    }, 2000);
+// Setup demo links for contact page - ONLY for non-functional elements
+function setupContactDemoLinks() {
+    const demoLinks = document.querySelectorAll('.demo-link');
+    demoLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showDemoMessage();
+        });
+    });
 }
 
 // Show alert message
@@ -106,4 +94,38 @@ function showAlert(message, type) {
             alert.remove();
         }
     }, 5000);
+}
+
+// Show demo message
+function showDemoMessage() {
+    // Create modal for demo message
+    const modalHTML = `
+        <div class="modal fade" id="demoModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title text-gold">Demo Feature</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center py-4">
+                        <div class="fs-1 mb-3">🚧</div>
+                        <h4 class="text-gold mb-3">Just a Demo Link</h4>
+                        <p class="mb-0">This is a demonstration website. In a full implementation, this feature would be fully functional.</p>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-gold" data-bs-dismiss="modal">Understood</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to body if not exists
+    if (!document.getElementById('demoModal')) {
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+    
+    // Show modal
+    const demoModal = new bootstrap.Modal(document.getElementById('demoModal'));
+    demoModal.show();
 }

@@ -1,140 +1,210 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
 import { products } from '../data/products';
 
+const FEATURES = [
+  { icon: '🔥', title: 'Flame-Grilled',    desc: 'Every cut grilled to perfection over an open flame for that unmistakable smoky flavor.' },
+  { icon: '🌍', title: 'Global Flavors',   desc: 'From desi biryanis to Korean BBQ — five world cuisines under one roof.' },
+  { icon: '⭐', title: 'Premium Quality',  desc: 'Hand-selected ingredients sourced from trusted local and international suppliers.' },
+  { icon: '🚴', title: 'Fast Delivery',    desc: 'Hot and fresh at your door in 30–45 minutes, every time.' },
+];
+
+const MARQUEE = ['Premium Steaks', '·', 'Desi Cuisine', '·', 'Korean BBQ', '·', 'Chinese Wok', '·', 'American Grill', '·', 'Fast Food', '·'];
+
 const Home = () => {
-  const featuredProducts = products.filter(product => product.featured);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
-  };
+  const featured = products.filter(p => p.featured).slice(0, 6);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-brand-black">
       <Hero />
 
-      {/* Featured Products Section */}
-      <section className="py-20 bg-primary-dark">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── Marquee strip ── */}
+      <div className="bg-brand-red py-3 overflow-hidden border-y border-brand-redDark">
+        <div className="marquee-track select-none">
+          {[...MARQUEE, ...MARQUEE].map((item, i) => (
+            <span key={i} className="font-display text-white text-lg tracking-widest uppercase mx-6 whitespace-nowrap">
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Featured dishes ── */}
+      <section className="py-24 bg-brand-black">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14"
           >
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
-              Featured Delicacies
-            </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Discover our most beloved dishes, crafted with exceptional ingredients and culinary expertise
-            </p>
+            <div>
+              <p className="font-body text-brand-red text-sm font-semibold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span className="inline-block w-8 h-px bg-brand-red" /> Our Specialties
+              </p>
+              <h2 className="font-display text-5xl md:text-7xl text-white uppercase tracking-wide leading-none">
+                FEATURED<br /><span className="text-brand-red">DISHES</span>
+              </h2>
+            </div>
+            <Link
+              to="/menu"
+              className="inline-flex items-center gap-2 font-body font-bold text-sm uppercase tracking-widest text-brand-muted border border-brand-border px-6 py-3 rounded-lg hover:text-white hover:border-white transition-all whitespace-nowrap"
+            >
+              Full Menu
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </motion.div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
-          >
-            {featuredProducts.map((product) => (
-              <motion.div key={product.id} variants={itemVariants}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((product, i) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+              >
                 <ProductCard product={product} />
               </motion.div>
             ))}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-center"
-          >
-            <Link
-              to="/menu"
-              className="inline-block border-2 border-primary-gold text-primary-gold px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary-gold hover:text-primary-dark transition-all duration-300 transform hover:scale-105"
-            >
-              View Full Menu
-            </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Brand Story Section */}
-      <section className="py-20 bg-primary-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* ── Why Us ── */}
+      <section className="py-24 bg-brand-charcoal border-t border-brand-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-16"
+          >
+            <p className="font-body text-brand-red text-sm font-semibold uppercase tracking-widest mb-3">Why Choose Us</p>
+            <h2 className="font-display text-5xl md:text-6xl text-white uppercase tracking-wide">
+              THE <span className="text-brand-red">DIFFERENCE</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURES.map((f, i) => (
+              <motion.div
+                key={f.title}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.5 }}
+                whileHover={{ y: -6 }}
+                className="bg-brand-card border border-brand-border rounded-2xl p-7 group hover:border-brand-red transition-colors duration-300"
+              >
+                <div className="text-4xl mb-5">{f.icon}</div>
+                <h3 className="font-heading font-bold text-white text-lg mb-3 group-hover:text-brand-red transition-colors">{f.title}</h3>
+                <p className="font-body text-brand-muted text-sm leading-relaxed">{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Brand Story ── */}
+      <section className="py-24 bg-brand-black overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -60 }}
               whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">
-                Our Culinary Journey
-              </h2>
-              <p className="text-lg text-gray-300 mb-6">
-                Founded with a passion for exceptional flavors, SteakJees brings together 
-                the finest ingredients from around the world with traditional cooking techniques 
-                passed down through generations.
+              <p className="font-body text-brand-red text-sm font-semibold uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span className="inline-block w-8 h-px bg-brand-red" /> Since 2009
               </p>
-              <p className="text-lg text-gray-300 mb-8">
-                Our master chefs combine innovation with tradition, creating dishes that 
-                tell a story of cultural heritage and modern culinary excellence.
+              <h2 className="font-display text-5xl md:text-6xl text-white uppercase tracking-wide leading-none mb-6">
+                OUR<br /><span className="text-brand-red">STORY</span>
+              </h2>
+              <p className="font-body text-brand-muted text-base leading-relaxed mb-4">
+                SteakJees was born from a single obsession: to serve food that genuinely moves people. Starting from a small kitchen in Karachi, we've grown into a multi-cuisine destination loved by thousands.
+              </p>
+              <p className="font-body text-brand-muted text-base leading-relaxed mb-8">
+                Our chefs blend traditional recipes with modern techniques — every plate is a statement of craftsmanship.
               </p>
               <Link
                 to="/about"
-                className="inline-block bg-primary-gold text-primary-dark px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center gap-2 font-body font-bold text-sm uppercase tracking-widest bg-brand-red text-white px-6 py-3 rounded-lg hover:bg-brand-redDark transition-colors"
               >
-                Learn Our Story
+                Learn More
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </Link>
             </motion.div>
 
+            {/* Visual grid */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 60 }}
               whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative"
+              className="grid grid-cols-2 gap-4"
             >
-              <div className="bg-gradient-to-br from-primary-gold to-primary-red p-1 rounded-2xl">
-                <div className="bg-primary-dark rounded-2xl p-8 h-96 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-primary-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-10 h-10 text-primary-dark" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>
-                      </svg>
-                    </div>
-                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                      Premium Quality
-                    </h3>
-                    <p className="text-gray-300">
-                      Hand-selected ingredients, expert preparation
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {[
+                { label: '50k+', sub: 'Orders Served',    bg: 'bg-brand-red' },
+                { label: '4.9★', sub: 'Average Rating',   bg: 'bg-brand-card border border-brand-border' },
+                { label: '15+',  sub: 'Years of Mastery', bg: 'bg-brand-card border border-brand-border' },
+                { label: '5',    sub: 'World Cuisines',   bg: 'bg-brand-red' },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.03 }}
+                  className={`${item.bg} rounded-2xl p-8 flex flex-col justify-end`}
+                  style={{ minHeight: '160px' }}
+                >
+                  <p className="font-display text-5xl text-white tracking-wider leading-none">{item.label}</p>
+                  <p className="font-body text-white/60 text-xs uppercase tracking-widest mt-2">{item.sub}</p>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
         </div>
+      </section>
+
+      {/* ── CTA Banner ── */}
+      <section className="py-20 bg-brand-red overflow-hidden relative">
+        <div className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)',
+            backgroundSize: '60px 60px'
+          }}
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative max-w-3xl mx-auto text-center px-6"
+        >
+          <h2 className="font-display text-5xl md:text-7xl text-white uppercase tracking-wide mb-6">
+            ORDER NOW
+          </h2>
+          <p className="font-body text-white/80 text-lg mb-8">
+            Fresh, hot, and delivered to your door in 30–45 minutes across Karachi, Lahore & Islamabad.
+          </p>
+          <Link to="/menu">
+            <motion.button
+              whileHover={{ scale: 1.05, backgroundColor: '#0A0A0A' }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-white text-brand-red font-body font-black px-10 py-4 rounded-xl uppercase tracking-widest text-sm transition-all duration-300"
+            >
+              View Full Menu →
+            </motion.button>
+          </Link>
+        </motion.div>
       </section>
     </div>
   );

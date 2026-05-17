@@ -1,217 +1,134 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
+const INFO = [
+  { icon: '📍', title: 'Visit Us',       lines: ['Block 7, Clifton', 'Karachi, Pakistan'] },
+  { icon: '📞', title: 'Call Us',        lines: ['+92 21 3567 8900', '+92 300 1234567'] },
+  { icon: '✉️', title: 'Email Us',       lines: ['info@steakjees.pk', 'orders@steakjees.pk'] },
+  { icon: '🕐', title: 'Opening Hours',  lines: ['Mon – Sun', '11:00 AM – 11:00 PM'] },
+];
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+const Contact = () => {
+  const [form, setForm]       = useState({ name: '', email: '', subject: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 4000);
+    setForm({ name: '', email: '', subject: '', message: '' });
   };
 
-  const contactInfo = [
-    {
-      icon: '📍',
-      title: 'Visit Us',
-      content: '123 Steak Street, Food District\nNew York, NY 10001',
-      link: '#'
-    },
-    {
-      icon: '📞',
-      title: 'Call Us',
-      content: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
-    },
-    {
-      icon: '✉️',
-      title: 'Email Us',
-      content: 'info@steakjees.com',
-      link: 'mailto:info@steakjees.com'
-    },
-    {
-      icon: '🕒',
-      title: 'Opening Hours',
-      content: 'Mon-Sun: 11:00 AM - 11:00 PM',
-      link: '#'
-    }
-  ];
+  const input = "w-full bg-brand-card border-2 border-brand-border text-white placeholder-brand-muted px-4 py-3.5 rounded-xl font-body text-sm focus:border-brand-red focus:outline-none transition-colors";
 
   return (
-    <div className="min-h-screen bg-primary-dark pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-4">
-            Get In Touch
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-          </p>
-        </motion.div>
+    <div className="min-h-screen bg-brand-black">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
+      {/* Hero */}
+      <div className="bg-brand-charcoal border-b border-brand-border pt-28 pb-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <p className="font-body text-brand-red text-sm font-semibold uppercase tracking-widest mb-3 flex items-center gap-2">
+              <span className="inline-block w-8 h-px bg-brand-red" /> Reach Out
+            </p>
+            <h1 className="font-display text-6xl md:text-8xl text-white uppercase tracking-wide leading-none">
+              GET IN<br /><span className="text-brand-red">TOUCH</span>
+            </h1>
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+
+          {/* Form */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7 }}
+            className="lg:col-span-3"
           >
-            <div className="bg-primary-light rounded-2xl p-8">
-              <h2 className="text-3xl font-serif font-bold text-white mb-6">
-                Send us a Message
-              </h2>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-brand-card border border-brand-border rounded-2xl p-8">
+              <h2 className="font-heading font-bold text-white text-2xl mb-6">Send Us a Message</h2>
+
+              {submitted && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-green-900/40 border border-green-700 text-green-400 font-body text-sm px-4 py-3 rounded-xl mb-6"
+                >
+                  ✅ Message sent! We'll get back to you within 24 hours.
+                </motion.div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="name" className="block text-white mb-2 font-medium">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full bg-primary-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-primary-gold focus:outline-none transition-colors"
-                      placeholder="Your full name"
-                    />
+                    <label className="font-body text-white/70 text-xs uppercase tracking-wider font-semibold mb-2 block">Full Name *</label>
+                    <input className={input} value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Your name" required />
                   </div>
-                  
                   <div>
-                    <label htmlFor="email" className="block text-white mb-2 font-medium">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full bg-primary-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-primary-gold focus:outline-none transition-colors"
-                      placeholder="your.email@example.com"
-                    />
+                    <label className="font-body text-white/70 text-xs uppercase tracking-wider font-semibold mb-2 block">Email *</label>
+                    <input className={input} type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="you@example.com" required />
                   </div>
                 </div>
-
                 <div>
-                  <label htmlFor="subject" className="block text-white mb-2 font-medium">
-                    Subject *
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-primary-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-primary-gold focus:outline-none transition-colors"
-                    placeholder="What is this regarding?"
-                  />
+                  <label className="font-body text-white/70 text-xs uppercase tracking-wider font-semibold mb-2 block">Subject *</label>
+                  <input className={input} value={form.subject} onChange={e => setForm({...form, subject: e.target.value})} placeholder="What's this about?" required />
                 </div>
-
                 <div>
-                  <label htmlFor="message" className="block text-white mb-2 font-medium">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows="6"
-                    className="w-full bg-primary-dark border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-primary-gold focus:outline-none transition-colors resize-none"
-                    placeholder="Tell us how we can help you..."
-                  />
+                  <label className="font-body text-white/70 text-xs uppercase tracking-wider font-semibold mb-2 block">Message *</label>
+                  <textarea className={`${input} resize-none`} rows={5} value={form.message} onChange={e => setForm({...form, message: e.target.value})} placeholder="Tell us how we can help..." required />
                 </div>
-
                 <motion.button
                   type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-primary-gold text-primary-dark py-4 rounded-lg font-semibold text-lg hover:bg-yellow-500 transition-colors"
+                  className="w-full bg-brand-red text-white font-body font-bold py-4 rounded-xl uppercase tracking-widest text-sm hover:bg-brand-redDark transition-colors"
                 >
-                  Send Message
+                  Send Message →
                 </motion.button>
               </form>
             </div>
           </motion.div>
 
-          {/* Contact Information */}
+          {/* Info */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
+            transition={{ duration: 0.7 }}
+            className="lg:col-span-2 space-y-4"
           >
-            {contactInfo.map((info, index) => (
+            {INFO.map((info, i) => (
               <motion.div
                 key={info.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-primary-light rounded-2xl p-6 hover:transform hover:scale-105 transition-all duration-300"
+                transition={{ delay: i * 0.1 }}
+                className="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-brand-red transition-colors group"
               >
-                <div className="flex items-start space-x-4">
-                  <div className="text-3xl">{info.icon}</div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-brand-red/10 rounded-xl flex items-center justify-center text-xl shrink-0 group-hover:bg-brand-red transition-colors">
+                    {info.icon}
+                  </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">
-                      {info.title}
-                    </h3>
-                    <p className="text-gray-300 whitespace-pre-line mb-2">
-                      {info.content}
-                    </p>
-                    <a
-                      href={info.link}
-                      className="text-primary-gold hover:text-yellow-400 font-medium transition-colors"
-                    >
-                      Get Directions →
-                    </a>
+                    <h3 className="font-heading font-bold text-white text-base mb-1">{info.title}</h3>
+                    {info.lines.map(l => (
+                      <p key={l} className="font-body text-brand-muted text-sm">{l}</p>
+                    ))}
                   </div>
                 </div>
               </motion.div>
             ))}
 
-            {/* Map Placeholder */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-primary-light rounded-2xl p-6 mt-8"
-            >
-              <h3 className="text-2xl font-serif font-bold text-white mb-4">
-                Find Us
-              </h3>
-              <div className="bg-primary-dark rounded-lg h-64 flex items-center justify-center">
-                <div className="text-center text-gray-400">
-                  <div className="text-4xl mb-2">🗺️</div>
-                  <p>Interactive Map</p>
-                  <p className="text-sm">(Map integration would go here)</p>
-                </div>
+            {/* Map placeholder */}
+            <div className="bg-brand-card border border-brand-border rounded-2xl p-6">
+              <h3 className="font-heading font-bold text-white text-base mb-4">Find Us</h3>
+              <div className="bg-brand-black rounded-xl h-44 flex flex-col items-center justify-center border border-brand-border">
+                <span className="text-4xl mb-2">🗺️</span>
+                <p className="font-body text-brand-muted text-sm">Block 7, Clifton, Karachi</p>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
